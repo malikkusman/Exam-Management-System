@@ -1,6 +1,10 @@
+import { useEffect } from "react";
 import Footer from "./layout/footer";
 import Navbar from "./layout/navbar";
 const About = () => {
+    useEffect(() => {
+        
+    })
     return (
         <div className="about_page">
             <Navbar />
