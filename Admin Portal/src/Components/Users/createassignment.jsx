@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "./sidebar";
 import Header from "./navbar";
 import { Button } from "react-bootstrap";
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import axios from "axios";
 import {
   MDBCard,
+  MDBBtn,
+  MDBSpinner,
   MDBCardBody,
-  MDBCardTitle,
-  MDBCardText,
+  MDBTable,
+  MDBTableHead,
+  MDBTableBody,
   MDBRow,
   MDBCol,
   MDBInput
@@ -15,107 +19,45 @@ import {
 import Cookies from "js-cookie";
 
 export default function CreateAssignment() {
-  const [desks, setDesks] = useState([]);
-  const [booking, setBookings] = useState([]);
+  const [data2, setdata] = useState([]);
   const [back, setBack] = useState([]);
-  const [userId,setUserId]=useState("");
-  const [check,setCheck]=useState(false);
+  const [udata, setudata] = useState([])
+  const [showModal, setShowModal] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [check, setCheck] = useState(false);
 
   useEffect(() => {
-    document.body.style.backgroundColor="white";
-    setUserId(hexToText(Cookies.get("seshId")));
-    fetchData();
-    fetchBooking();
-  }, []);
+    fetchData()
+  }, [showModal]);
 
-  function hexToText(hex) {
-    let text = '';
-    try{
-        for (let i = 0; i < hex.length; i += 2) {
-            text += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-        }
-    }
-    catch{
-        text="";
-    }
-    return text;
-  }
 
   const fetchData = async () => {
-    await fetch(
-    `http://localhost:4000/getDesks`,
-    {
-      method: "GET",
-      headers: {
-        "api-key": process.env.REACT_APP_API_KEY,
-      },
-    }
-  )
-    .then((response) => {
-      if (!response.ok) {
+    const username = localStorage.getItem("teacher")
+    try {
+      const response = await axios.get(`http://localhost:4000/assignment/getbyusername?username=${username}`);
+      if (response.status !== 200) {
         throw new Error("Request failed.");
       }
-      return response.json();
-    })
-    .then((data) => {
-      setDesks(data.data);
-      setBack(data.data);
-    })
-    .catch((error) => {
+      setdata(response.data);
+      setBack(response.data);
+    } catch (error) {
       console.error("Error:", error);
-    });
+    }
   };
 
-  const fetchBooking = async () => {
-    await fetch(
-    `http://localhost:4000/getDeskbooking`,
-    {
-      method: "GET",
-      headers: {
-        "api-key": process.env.REACT_APP_API_KEY,
-      },
-    }
-  )
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Request failed.");
-      }
-      return response.json();
-    })
-    .then((data) => {
-        setBookings(data.data);
-    })
-    .catch((error) => {
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:4000/assignment/delete?id=${id}`);
+      window.location.href = "/create-assignment";
+    } catch (error) {
       console.error("Error:", error);
-    });
-  };
-
-  
-  function formatDate(inputDate) {
-    const date = new Date(inputDate);
-    return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+    }
+  }
+  const updateHandle = (cour) => {
+    setudata(cour)
   }
 
-  function color(userId, deskid) {
-    const start = formatDate(document.getElementById("from").value);
-    const to = formatDate(document.getElementById("to").value);
-    if(booking.length==0){
-      return "white";
-    }
-    else{
-    for (let i = 0; i < booking.length; i++) {
-      const bookingStart = formatDate(booking[i].fromTime);
-      const bookingEnd = formatDate(booking[i].toTime);
-      if (!(to <= bookingStart || start >= bookingEnd) && (booking[i].userid == parseInt(userId) && booking[i].deskid == deskid)) {
-        return "green";
-      }
-      if (!(to <= bookingStart || start >= bookingEnd) && (booking[i].userid != parseInt(userId) && booking[i].deskid == deskid)) {
-        return "red";
-      }
-    }
-    return "white";
-   }
-  }
 
 
   return (
@@ -138,7 +80,7 @@ export default function CreateAssignment() {
               marginLeft: "30px",
             }}
           >
-            Create Assignment
+            Assignments
           </h3>
           <a href="/add-assignment">
             <Button
@@ -154,41 +96,7 @@ export default function CreateAssignment() {
             </Button>
           </a>
         </div>
-
-        <div className="d-flex justify-content-center align-items-center">
-         <div>
-            <p className="text-center">Check created Assignments</p>
-            <div className="d-lg-flex justify-content-center align-items-center">
-              <div className="mb-4 mb-lg-0 mr-lg-2">
-                <MDBInput
-                  name="date"
-                  id="from"
-                  type="input"
-                  onChange={()=>{setCheck(false)}}
-                  required
-                />
-              </div>
-              <div className="mb-4 mb-lg-0">
-                <Button
-                  size="sm"
-                  variant="primary"
-                  style={{ height: "35px" }}
-                  onClick={()=>{
-                    if(document.getElementById("from").value=="" || document.getElementById("to").value==""){
-                      alert("Select start and end date");
-                    }
-                    else{
-                      setCheck(true);
-                    }
-                  }}
-                >
-                  Check
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-
+        <Modal data={udata} showModal={showModal} setShowModal={setShowModal} />
         <MDBRow
           className="row-cols-1 row-cols-md-4 g-4"
           style={{
@@ -197,66 +105,260 @@ export default function CreateAssignment() {
             marginLeft: "30px",
           }}
         >
-          {check?(
-            desks.map((desk, index) => (
-              <MDBCol>
-                <MDBCard className="h-100" style={{backgroundColor:check ? color(userId,desk.Id):"white"}}>
-                  <MDBCardBody style={{ textAlign: "center" }}>
-                    <MDBCardTitle>Desk No: {desk.deskno}</MDBCardTitle>
-                    <MDBCardText>
-                      <span>
-                        <b>Status: </b>
-                        {console.log(color(userId,desk.Id))}
-                        {console.log(color(userId,desk.Id))}
-                        {color(userId,desk.Id)=="white"?"Available":"Occupied"}
-                      </span>
-                      <br />
-                      <b>
-                        <a href={`/desk-details-user?id=${desk.Id}`}>More Details</a>
-                      </b>
-                      <br />
-                      {color(userId,desk.Id)=="white"?(
-                          <Link to={`/book-desk?id=${desk.Id}`}>
-                          <Button
-                          size="sm"
-                          variant="primary"
-                          style={{ marginRight: "2px", marginTop: "2px" }}
-                          >
-                              Book desk
-                          </Button>
-                          </Link>
-                       ):(
-                          null
-                      )} 
-                    </MDBCardText>
-                  </MDBCardBody>
-                </MDBCard>
-              </MDBCol>
-            ))
-          ):(
-            desks.map((desk, index) => (
-              <MDBCol>
-                <MDBCard className="h-100">
-                  <MDBCardBody style={{ textAlign: "center" }}>
-                    <MDBCardTitle>Desk No: {desk.deskno}</MDBCardTitle>
-                    <MDBCardText>
-                      <span>
-                        <b>Status: </b>
-                        Check Availability
-                      </span>
-                      <br />
-                      <b>
-                        <a href={`/desk-details-user?id=${desk.Id}`}>More Details</a>
-                      </b>
-                      <br />
-                    </MDBCardText>
-                  </MDBCardBody>
-                </MDBCard>
-              </MDBCol>
-            ))
-          )}        
-          </MDBRow>
-      </div>
-    </div>
+          <div style={{ overflowX: "auto", width: "100%" }}>
+            <MDBTable hover style={{ margin: "10px" }}>
+              <MDBTableHead>
+                <tr>
+                  <th>Name</th>
+                  <th>Category</th>
+                  <th>Description</th>
+                  <th>Date</th>
+                  <th>File</th>
+                  <th>marks</th>
+                  <th>Update</th>
+                  <th>Delete</th>
+                </tr>
+              </MDBTableHead>
+              <MDBTableBody>
+                {data2 && data2.map((us, index) => (
+                  <tr key={us._id}>
+                    <td>{us.Name}</td>
+                    <td>{us.Category}</td>
+                    <td>{us.Description}</td>
+                    <td>{us.Date}</td>
+                    <td><a href={`http://localhost:4000/images/${us.File}`} width="100%" height="500px">
+                      file
+                    </a>
+                    </td>
+                    <td>{us.Marks}</td>
+                    <td><Button onClick={() => {
+                      updateHandle(us);
+                      setShowModal(true);
+                    }}
+                      style={{
+                        backgroundColor: "#3c4763",
+                        border: "none",
+                        color: "white",
+                        fontWeight: "bold",
+                        marginTop: "10px",
+                      }}
+                    >
+                      Update
+                    </Button></td>
+                    <td><Button onClick={() => handleDelete(us._id)}
+                      style={{
+                        backgroundColor: "#3c4763",
+                        border: "none",
+                        color: "white",
+                        fontWeight: "bold",
+                        marginTop: "10px",
+                      }}
+                    >
+                      Delete
+                    </Button></td>
+                  </tr>
+                ))}
+              </MDBTableBody>
+            </MDBTable>
+          </div>
+        </MDBRow>
+      </div >
+    </div >
   );
 }
+
+
+
+const Modal = ({ data, showModal, setShowModal }) => {
+
+  const [submit, setSubmit] = useState(false);
+  const [name, setname] = useState(""); // Assuming `data.Course` holds initial value
+  const [category, setcategory] = useState(""); // Assuming `data.INSTname` holds initial value
+  const [description, setdescription] = useState(""); // Assuming `data.Description` holds initial value
+  const [date, setdate] = useState(""); // Assuming `data.Course` holds initial value
+  const [file, setfile] = useState(data.File); // Assuming `data.INSTname` holds initial value
+  const [number, setnumber] = useState(""); // Assuming `data.INSTname` holds initial value
+
+  function convertMongoDBDateToInputValue(mongoDBDateString) {
+    try {
+      const date = new Date(mongoDBDateString);
+      if (isNaN(date)) {
+        throw new Error('Invalid date');
+      }
+
+      const year = date.getFullYear();
+      let month = (date.getMonth() + 1).toString().padStart(2, '0');
+      let day = date.getDate().toString().padStart(2, '0');
+
+      // Format the date as 'YYYY-MM-DD'
+      const formattedDate = `${year}-${month}-${day}`;
+      return formattedDate;
+    } catch (error) {
+      console.error('Error converting date:', error.message);
+      return ''; // Return an empty string or handle the error accordingly
+    }
+  }
+
+
+  useEffect(() => {
+    setname(data.Name)
+    setcategory(data.Category)
+    setdescription(data.Description)
+    setdate(convertMongoDBDateToInputValue(data.Date))
+    setfile(data.File)
+    setnumber(data.Marks)
+  }, [showModal])
+
+  const handlenChange = (e) => {
+    setname(e.target.value);
+  };
+
+  const handlecChange = (e) => {
+    setcategory(e.target.value);
+  };
+
+  const handledesChange = (e) => {
+    setdescription(e.target.value);
+  };
+
+  const handledChange = (e) => {
+    date(e.target.value);
+  };
+
+  const handlefChange = (e) => {
+    const selectedFile = e.target.files[0];
+    console.log(selectedFile.name); // Display the name of the selected file
+    setfile(selectedFile); // Store the selected file in state if needed
+  };
+  const handlenuChange = (e) => {
+    setnumber(e.target.value);
+  };
+
+
+  const handleSubmit = async (event) => {
+    setShowModal(false)
+    event.preventDefault();
+    setSubmit(true);
+    const username = localStorage.getItem("teacher")
+    const data1 = {
+      Name: name,
+      Category: category,
+      Description: description,
+      Date: date,
+      Marks: number,
+      file: file,
+      teacher: username
+    }
+    try {
+      const response = await axios.put(`http://localhost:4000/assignment/update?id=${data._id}`, data1, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log(response.data)
+      if (response.status == 200) {
+        window.location.href = "/create-assignment";
+      } else if (response.data.message === "already") {
+        setSubmit(false);
+        document.getElementById("desk-error").innerHTML = "Course ALREADY EXIST";
+        document.getElementById("desk-error").style.color = "red";
+        document.getElementById("desk-error").style.display = "block";
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+  // You can customize the modal content here
+  //   
+  return (
+    <div className={`fixed top-0 left-0 w-full h-full bg-black z-10 bg-opacity-50 flex justify-center items-center ${showModal ? '' : 'hidden'}`}>
+      <div>
+        <center>
+          <MDBCol md="7" className="w-100">
+            <MDBCard className="my-5">
+              <form
+                onSubmit={handleSubmit}
+              >
+                <MDBCardBody className="p-5">
+                  <select
+                    className="form-select mb-4"
+                    id="category"
+                    name="category"
+                    required
+                    value={category}
+                    onChange={handlecChange}
+                  >
+                    <option value="">Select Category</option>
+                    <option value="assignment">Assignment</option>
+                    <option value="quiz">Quiz</option>
+                    {/* Add more options as needed */}
+                  </select>
+                  <MDBInput
+                    value={name}
+                    onChange={handlenChange}
+                    wrapperClass="mb-4"
+                    label="Name"
+                    name="name"
+                    id="name"
+                    type="text"
+                    required
+                  />
+                  <MDBInput
+                    value={description}
+                    onChange={handledesChange}
+                    wrapperClass="mb-4"
+                    label="Description"
+                    name="description"
+                    id="description"
+                    type="text"
+                    required
+                  />
+                  <MDBInput
+                    value={date}
+                    onChange={handledChange}
+                    wrapperClass="mb-4"
+                    label="Date"
+                    name="date"
+                    id="date"
+                    type="date"
+                    required
+                  />
+                  <MDBInput
+                    onChange={handlefChange}
+                    wrapperClass="mb-4"
+                    label={data.File}
+                    name="file"
+                    id="file"
+                    type="file"
+                  />
+                  <MDBInput
+                    value={number}
+                    onChange={handlenuChange}
+                    wrapperClass="mb-4"
+                    label="Number"
+                    name="number"
+                    id="number"
+                    type="text"
+                    required
+                  />
+                  <br />
+                  <MDBBtn
+                    type="submit"
+                    className="w-100 mb-4"
+                    size="md"
+                    style={{
+                      backgroundColor: "#3c4763",
+                      color: "white",
+                    }}
+                  >
+                    {submit ? <MDBSpinner style={{ color: "white" }}></MDBSpinner> : <span>Update Assignment</span>}
+                  </MDBBtn>
+                </MDBCardBody>
+              </form>
+            </MDBCard>
+          </MDBCol>
+        </center>
+      </div>
+    </div >
+  );
+};
