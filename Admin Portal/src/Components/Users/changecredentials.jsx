@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "./sidebar";
 import Header from "./navbar";
+import axios from "axios";
 import {
   MDBBtn,
   MDBCol,
@@ -10,27 +11,30 @@ import {
   MDBIcon,
   MDBSpinner,
 } from "mdb-react-ui-kit";
+import Alert from "react-bootstrap/Alert";
 import Cookies from "js-cookie";
 
 export default function UserPassword() {
   const [submit,setSubmit]=useState(false);
-  const [userid,setUserid]=useState("");
+  const [user, Setuser] = useState([])
+  useEffect(() => {
+    users()
+    console.log("user",user)
+  }, [])
 
-  useEffect(()=>{
-    setUserid(hexToText(Cookies.get("seshId")));
-  },[])
+  const users = async () => {
+    const role = "teacher"
+    try {
+      const response = await axios.get(`http://localhost:4000/user/getall?role=${role}`);
 
-  function hexToText(hex) {
-    let text = '';
-    try{
-        for (let i = 0; i < hex.length; i += 2) {
-            text += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
-        }
+      if (response.status !== 200) {
+        throw new Error("Request failed.");
+      }
+      console.log(response.data)
+      Setuser(response.data);
+    } catch (error) {
+      console.error("Error:", error);
     }
-    catch{
-        text="";
-    }
-    return text;
   }
 
   const handleSubmit = async (event) => {
@@ -38,63 +42,93 @@ export default function UserPassword() {
     var newpass = document.getElementById("newpass").value;
     var current = document.getElementById("current").value;
     var confirmpass = document.getElementById("confirm").value;
-    var submit = true;
-    if (newpass != confirmpass) {
-      submit = false;
-      document.getElementById("pass-error").innerHTML =
-        "New Password & Confirm Pasword must be same";
-      document.getElementById("pass-error").style.display = "block";
-      document.getElementById("pass-error").style.color = "red";
-    } else if(newpass.length<6) {
-      document.getElementById("pass-error").innerHTML =
-        "New Password length must be 6 or more";
-      document.getElementById("pass-error").style.display = "block";
-      document.getElementById("pass-error").style.color = "red";
+    console.log(user[0].password,newpass,current,confirmpass)
+    if (current == user[0].password && newpass == confirmpass){
+      const data1 = {
+        password: newpass
+      }
+      try {
+        const response = await axios.put(`http://localhost:4000/user/update?id=${user[0]._id}`, data1);
+        console.log(response)
+        if (response.status == 200) {
+          window.location.href = "/user-credentials";
+        } else if (response.data.message === "already") {
+          setSubmit(false);
+          document.getElementById("desk-error").innerHTML = "Course ALREADY EXIST";
+          document.getElementById("desk-error").style.color = "red";
+          document.getElementById("desk-error").style.display = "block";
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
     }
     else{
-      setSubmit(true);
-      document.getElementById("pass-error").display="none";
-      await fetch(
-        `http://localhost:4000/changeuserpass?current=${current}&newpass=${newpass}&id=${userid}`,
-        {
-          method: "GET",
-          headers: {
-            "api-key": process.env.REACT_APP_API_KEY,
-          },
-        }
-      )
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Request failed.");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          setSubmit(false);
-          if(data.message=="updated"){
-            document.getElementById("addform").reset();
-            document.getElementById("pass-error").innerHTML =
-            "CREDENTIALS HAS BEEN CHANGED";
-            document.getElementById("pass-error").style.display = "block";
-            document.getElementById("pass-error").style.color = "green";
-          }
-          else if(data.message=="invalid"){
-            document.getElementById("pass-error").innerHTML =
-            "CURRENT PASSWORD IS INCORRECT";
-            document.getElementById("pass-error").style.display = "block";
-            document.getElementById("pass-error").style.color = "red";
-          }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+      console.log("incorrect information")
     }
-  };
+  }
+
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   var newpass = document.getElementById("newpass").value;
+  //   var current = document.getElementById("current").value;
+  //   var confirmpass = document.getElementById("confirm").value;
+  //   var submit = true;
+  //   if (newpass != confirmpass) {
+  //     submit = false;
+  //     document.getElementById("pass-error").innerHTML =
+  //       "New Password & Confirm Pasword must be same";
+  //     document.getElementById("pass-error").style.display = "block";
+  //     document.getElementById("pass-error").style.color = "red";
+  //   } else if(newpass.length<6) {
+  //     document.getElementById("pass-error").innerHTML =
+  //       "New Password length must be 6 or more";
+  //     document.getElementById("pass-error").style.display = "block";
+  //     document.getElementById("pass-error").style.color = "red";
+  //   }
+  //   else{
+  //     setSubmit(true);
+  //     document.getElementById("pass-error").display="none";
+  //     await fetch(
+  //       `http://localhost:4000/changecredentials?current=${current}&newpass=${newpass}&uuid=${Cookies.get("seshad")}`,
+  //       {
+  //         method: "GET",
+  //         headers: {
+  //           "api-key": process.env.REACT_APP_API_KEY,
+  //         },
+  //       }
+  //     )
+  //       .then((response) => {
+  //         if (!response.ok) {
+  //           throw new Error("Request failed.");
+  //         }
+  //         return response.json();
+  //       })
+  //       .then((data) => {
+  //         setSubmit(false);
+  //         if(data.message=="updated"){
+  //           document.getElementById("addform").reset();
+  //           document.getElementById("pass-error").innerHTML =
+  //           "CREDENTIALS HAS BEEN CHANGED";
+  //           document.getElementById("pass-error").style.display = "block";
+  //           document.getElementById("pass-error").style.color = "green";
+  //         }
+  //         else if(data.message=="invalid"){
+  //           document.getElementById("pass-error").innerHTML =
+  //           "CURRENT PASSWORD IS INCORRECT";
+  //           document.getElementById("pass-error").style.display = "block";
+  //           document.getElementById("pass-error").style.color = "red";
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error:", error);
+  //       });
+  //   }
+  // };
   
 
   return (
     <div style={{ width: "100%", display: "flex" }}>
-      <div style={{ width: "22.4%" }}>
+      <div style={{ width: "22%" }}>
         <Sidebar />
       </div>
       <div style={{ width: "83%" }}>

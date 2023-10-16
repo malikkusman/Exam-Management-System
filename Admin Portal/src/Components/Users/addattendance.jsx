@@ -13,7 +13,7 @@ import {
 } from "mdb-react-ui-kit";
 import Cookies from "js-cookie";
 
-export default function Attendance() {
+export default function AddAttendance() {
   const [users, setUsers] = useState([]);
   const [back, setBack] = useState([]);
   const [udata, setudata] = useState([])
@@ -275,12 +275,15 @@ export default function Attendance() {
 
 
   const fetchData = async () => {
+    const role = "student"
     try {
-      const response = await axios.get(`http://localhost:4000/attendance/get`);
+      const response = await axios.get(`http://localhost:4000/user/getall?role=${role}`);
 
       if (response.status !== 200) {
         throw new Error("Request failed.");
       }
+      const initialStatus = Array(response.data.length).fill("present");
+      setNewArray(initialStatus);
       setUsers(response.data);
       setBack(response.data);
     } catch (error) {
@@ -308,24 +311,35 @@ export default function Attendance() {
               marginLeft: "30px",
             }}
           >
-            Attendance
+            Add Attendance
           </h3>
-          <a href="/add-attendance">
-            <Button
-              style={{
-                border: "none",
-                color: "white",
-                fontWeight: "bold",
-                marginTop: "10px",
-                marginRight: "10px",
-              }}
-            >
-              Add attendance
-            </Button>
-          </a>
         </div>
         <div className="d-flex justify-content-center align-items-center">
           <div>
+            <p className="text-center">Check Student Attendnace</p>
+            <div className="d-lg-flex justify-content-center align-items-center">
+              <div className="mb-4 mb-lg-0 mr-lg-2">
+                <MDBInput
+                  value={date1}
+                  name="date"
+                  id="from"
+                  type="date"
+                  onChange={(event) => setDate(event.target.value)}
+                  required
+                />
+              </div>
+              <div className="mb-4 mb-lg-0">
+                <Button
+                  size="sm"
+                  variant="primary"
+                  style={{ height: "35px" }}
+                  onClick={checkhandle}
+                >
+
+                  Check
+                </Button>
+              </div>
+            </div>
             <MDBRow
               className="row-cols-1 row-cols-md-4 g-4"
               style={{
@@ -341,7 +355,9 @@ export default function Attendance() {
                     <th>Last Name</th>
                     <th>Username</th>
                     <th>Status</th>
-                    <th>Date</th>
+                    <th>Present</th>
+                    <th>Absent</th>
+                    <th>Leave</th>
                   </tr>
                 </MDBTableHead>
                 <MDBTableBody>
@@ -350,8 +366,43 @@ export default function Attendance() {
                       <td>{user.Firstname}</td>
                       <td>{user.Lastname}</td>
                       <td>{user.Username}</td>
-                      <td>{user.Status}</td>
-                      <td>{user.Date}</td>
+                      <td>{newArray[index]}</td>
+                      <td><Button
+                        style={{
+                          backgroundColor: "#3c4763",
+                          border: "none",
+                          color: "white",
+                          fontWeight: "bold",
+                          marginTop: "10px",
+                        }}
+                        onClick={() => handlepresent(user, index)}
+                      >
+                        Present
+                      </Button></td>
+                      <td><Button
+                        style={{
+                          backgroundColor: "#3c4763",
+                          border: "none",
+                          color: "white",
+                          fontWeight: "bold",
+                          marginTop: "10px",
+                        }}
+                        onClick={() => handleabsent(user, index)}
+                      >
+                        Absent
+                      </Button></td>
+                      <td><Button
+                        style={{
+                          backgroundColor: "#3c4763",
+                          border: "none",
+                          color: "white",
+                          fontWeight: "bold",
+                          marginTop: "10px",
+                        }}
+                        onClick={() => handleleave(user, index)}
+                      >
+                        Leave
+                      </Button></td>
                     </tr>
                   ))}
                 </MDBTableBody>
