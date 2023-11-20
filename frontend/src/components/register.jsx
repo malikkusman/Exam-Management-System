@@ -31,10 +31,11 @@ const Register = () => {
             Lastname: lname,
             email: email,
             Username: username,
-            password: pass
+            password: pass,
+            role: "student"
         }
         console.log(Data)
-        axios.post('http://localhost:4000/register', Data)
+        axios.post('http://localhost:4000/user/register', Data)
             .then((response) => {
                 console.log('Response:', response.data);
             })

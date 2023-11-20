@@ -1,7 +1,7 @@
 const User = require('../models/userSchema')
 const jwt = require('jsonwebtoken');
-var {db} = require('../database/mongodb');
-const {transporter} = require('../nodemailer/nodemailer')
+var {db} = require('../utils.js/mongodb');
+const {transporter} = require('../utils.js/nodemailer')
 
 async function RegisterUser(req, res) {
     console.log(req.body.credential)
@@ -29,22 +29,13 @@ async function RegisterUser(req, res) {
                 if (error) throw error
                 else{
                     transporter.close();
-                    db.collection('Users').insertOne(data, (err, result) => {
+                    db.collection('users').insertOne(data, (err, result) => {
                         if(err){
                             console.log(err);
                         }
                         else{
-                            // const data={
-                            //     "email":email,
-                            //     "code":code,
-                            // }
-                            // db.collection('tokens').insertOne(data,(err,collection)=>{
-                                // if(err) throw err;
-                                // else{
-                                const responseData = { message: 'data added'};
-                                res.status(200).json(responseData);
-                            // }
-                        // })
+                            const responseData = { message: 'data added'};
+                            res.status(200).json(responseData);
                         }
                     })    
                 }
@@ -63,12 +54,14 @@ async function RegisterUser(req, res) {
             const pass = req.body.password
             const email = req.body.email
             const active = true
+            const role = req.body.role
             const data = {
                 Firstname : fname,
                 Lastname : lname,
                 Username : username,
                 password : pass,
                 email : email,
+                role : role,
                 active : active
             }
             console.log('data',data)
@@ -84,22 +77,13 @@ async function RegisterUser(req, res) {
                 else
                 {
                     transporter.close();
-                    db.collection('Users').insertOne(data, (err, result) => {
+                    db.collection('users').insertOne(data, (err, result) => {
                         if(err){
                             console.log(err);
                         }
                         else{
-                            // const data={
-                            //     "email":email,
-                            //     "code":code,
-                            // }
-                            // db.collection('tokens').insertOne(data,(err,collection)=>{
-                                // if(err) throw err;
-                                // else{
-                                const responseData = { message: 'data added'};
-                                res.status(200).json(responseData);
-                            // }
-                        // })
+                            const responseData = { message: 'data added'};
+                            res.status(200).json(responseData);
                         }
                     })    
                 }
@@ -130,7 +114,42 @@ async function getUsers(req, res) {
     }
 }
 
+async function getallUsers(req, res) {
+    const role = req.query.role
+    try {
+        const user = await User.find({ role: role });
+        res.status(200).json(user);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+}
+
+async function updateUser(req, res) {
+    try {
+      const id = req.query.id;
+      const updatedCourse = await User.findByIdAndUpdate(id, req.body, { new: true });
+      res.status(200).json(updatedCourse);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
+
+async function deleteUser(req, res) {
+    try {
+      const id = req.query.id;
+      console.log(id);
+      const deletedCourse = await User.findByIdAndRemove(id);
+      const responseData = { message: 'deleted' };
+      res.status(204).json(responseData);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
+
 module.exports = {
     RegisterUser,
     getUsers,
+    getallUsers,
+    deleteUser,
+    updateUser
 };

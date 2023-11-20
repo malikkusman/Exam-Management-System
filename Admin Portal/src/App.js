@@ -5,14 +5,12 @@ import Login from './Components/login';
 import Mangaeusers from './Components/Admin/mangausers';
 import Addusers from './Components/Admin/addusers';
 import UpdateUsers from './Components/Admin/updateusers';
-import Addrooms from './Components/Admin/addroom';
 import Roomdetails from './Components/Admin/roomdetails';
 import Bookingdetails from './Components/Admin/bookingdetails';
 import Updaterooms from './Components/Admin/updateroom';
 import RoomHistory from './Components/Admin/roomhistory';
 import ChangePassword from './Components/Admin/changepassword';
 import PrivateRoute from './Components/Admin/private';
-import Adddesks from './Components/Admin/adddesk';
 import Deskdetails from './Components/Admin/deskdetails';
 import UpdateDesk from './Components/Admin/updatedesk';
 import Mangaeadmins from './Components/Admin/manageadmins';
@@ -35,6 +33,8 @@ import Attendance from './Components/Users/attendance';
 import CreateAssignment from './Components/Users/createassignment';
 import AssignMarks from './Components/Users/assignmarks';
 import GenerateReports from './Components/Users/generatereports';
+import Adddcourse from './Components/Admin/addcourse';
+import Addinstructor from './Components/Admin/addinstructor';
 
 function App() {
   return (
@@ -49,8 +49,8 @@ function App() {
         <PrivateRoute path="/add-users" component={Addusers}/>
         <PrivateRoute path="/update-users" component={UpdateUsers}/>
         <PrivateRoute path="/manage-teachers" component={ManageTeachers}/>
-        <PrivateRoute path="/add-desks" component={Adddesks}/>
-        <PrivateRoute path="/add-rooms" component={Addrooms}/>
+        <PrivateRoute path="/add-course" component={Adddcourse}/>
+        <PrivateRoute path="/add-instructor" component={Addinstructor}/>
         <PrivateRoute path="/room-details" component={Roomdetails}/>
         <PrivateRoute path="/manage-scheduling" component={ManageScheduling}/>
         <PrivateRoute path="/booking-details" component={Bookingdetails}/>

@@ -5,10 +5,12 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors'); // Import the cors package
 const bodyParser = require('body-parser');
-require('./database/mongodb')
+require('./utils.js/mongodb')
 
 var indexRouter = require('./routes/index');
 var authRouter = require('./routes/auth');
+var courseRouter = require('./routes/course');
+
 
 
 
@@ -28,6 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/user', authRouter);
+app.use('/course', courseRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
