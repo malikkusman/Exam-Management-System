@@ -10,6 +10,7 @@ require('./utils.js/mongodb')
 var indexRouter = require('./routes/index');
 var authRouter = require('./routes/auth');
 var courseRouter = require('./routes/course');
+var scheduleRouter = require('./routes/schedule');
 
 
 
@@ -31,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/user', authRouter);
 app.use('/course', courseRouter);
+app.use('/schedule', scheduleRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

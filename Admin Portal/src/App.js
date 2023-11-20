@@ -35,6 +35,7 @@ import AssignMarks from './Components/Users/assignmarks';
 import GenerateReports from './Components/Users/generatereports';
 import Adddcourse from './Components/Admin/addcourse';
 import Addinstructor from './Components/Admin/addinstructor';
+import Addschedule from './Components/Admin/addschedule';
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
         />
         <PrivateRoute path="/manage-users" component={Mangaeusers}/>
         <PrivateRoute path="/add-users" component={Addusers}/>
+        <PrivateRoute path="/add-schedule" component={Addschedule}/>
         <PrivateRoute path="/update-users" component={UpdateUsers}/>
         <PrivateRoute path="/manage-teachers" component={ManageTeachers}/>
         <PrivateRoute path="/add-course" component={Adddcourse}/>
