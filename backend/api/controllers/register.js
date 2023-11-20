@@ -28,11 +28,27 @@ async function RegisterUser(req, res) {
             transporter.sendMail(mailoption,(error,info)=>{
                 if (error) throw error
                 else{
-                    console.log("email sent");
+                    transporter.close();
+                    db.collection('Users').insertOne(data, (err, result) => {
+                        if(err){
+                            console.log(err);
+                        }
+                        else{
+                            // const data={
+                            //     "email":email,
+                            //     "code":code,
+                            // }
+                            // db.collection('tokens').insertOne(data,(err,collection)=>{
+                                // if(err) throw err;
+                                // else{
+                                const responseData = { message: 'data added'};
+                                res.status(200).json(responseData);
+                            // }
+                        // })
+                        }
+                    })    
                 }
             })
-            const user = await User.create(data);
-            res.status(201).json(user);
         } catch (e) {
             res.status(500).json({ error: e.message });
         }
