@@ -1,14 +1,14 @@
-import Footer from "./layout/footer";
+ import Footer from "./layout/footer";
 import Navbar from "./layout/navbar";
 
 const Attendance = () => {
     return (
         <div className="attendance_page">
             <Navbar />
-            <div className="content">
-                <h1>Attendance</h1>
+            <div className="content mt-16">
+                <h1 className="text-3xl">Attendance</h1>
                 <section class="py-1 bg-blueGray-50">
-                    <div class="w-full xl:w-8/12 mb-12 xl:mb-0 px-4 mx-auto mt-24">
+                    <div class="w-full xl:w-8/12 mb-12 xl:mb-0 px-4 mx-auto">
                         <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded ">
 
                             <div class="block w-full overflow-x-auto">
@@ -16,16 +16,19 @@ const Attendance = () => {
                                     <thead>
                                         <tr>
                                             <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                                Page name
+                                                Student Name
                                             </th>
                                             <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                                Visitors
+                                                Date
                                             </th>
                                             <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                                Unique users
+                                                Present
                                             </th>
                                             <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                                Bounce rate
+                                                Absent
+                                            </th>
+                                            <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                                Leave
                                             </th>
                                         </tr>
                                     </thead>
@@ -40,6 +43,10 @@ const Attendance = () => {
                                             </td>
                                             <td class="border-t-0 px-6 align-center border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                                 340
+                                            </td>
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                                <i class="fas fa-arrow-up text-emerald-500 mr-4"></i>
+                                                46,53%
                                             </td>
                                             <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                                 <i class="fas fa-arrow-up text-emerald-500 mr-4"></i>
@@ -60,6 +67,10 @@ const Attendance = () => {
                                                 <i class="fas fa-arrow-down text-orange-500 mr-4"></i>
                                                 46,53%
                                             </td>
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                                <i class="fas fa-arrow-up text-emerald-500 mr-4"></i>
+                                                46,53%
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700">
@@ -74,6 +85,10 @@ const Attendance = () => {
                                             <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                                 <i class="fas fa-arrow-down text-orange-500 mr-4"></i>
                                                 36,49%
+                                            </td>
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                                <i class="fas fa-arrow-up text-emerald-500 mr-4"></i>
+                                                46,53%
                                             </td>
                                         </tr>
                                         <tr>
@@ -90,6 +105,10 @@ const Attendance = () => {
                                                 <i class="fas fa-arrow-up text-emerald-500 mr-4"></i>
                                                 50,87%
                                             </td>
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                                <i class="fas fa-arrow-up text-emerald-500 mr-4"></i>
+                                                46,53%
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700">
@@ -105,6 +124,10 @@ const Attendance = () => {
                                                 <i class="fas fa-arrow-down text-red-500 mr-4"></i>
                                                 46,53%
                                             </td>
+                                            <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                                                <i class="fas fa-arrow-up text-emerald-500 mr-4"></i>
+                                                46,53%
+                                            </td>   
                                         </tr>
                                     </tbody>
 

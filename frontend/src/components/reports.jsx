@@ -5,9 +5,9 @@ const Reports = () => {
     return (
         <div className="reports_page">
             <Navbar />
-            <div className="content flex flex-col justify-center items-center">
-                <h1>Reports</h1>
-                <div className="max-w-4xl px-10 my-4 py-6 bg-white rounded-lg shadow-md">
+            <div className="content flex flex-col mt-16 mb-8 justify-center items-center">
+                <h1 className="text-3xl">Reports</h1>
+                <div className="max-w-4xl px-10 bg-white rounded-lg shadow-md">
                     <div className="mt-2">
                         <a className="text-2xl text-gray-700 font-bold hover:text-gray-600" href="/">
                             Report

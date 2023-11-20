@@ -30,53 +30,16 @@ const Profile = () => {
                                 <input type="email" name="email" id="email" placeholder="Enter your email"
                                     class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
                             </div>
-                            <div class="-mx-3 flex flex-wrap">
-                                <div class="w-full px-3 sm:w-1/2">
-                                    <div class="mb-5">
-                                        <label for="date" class="mb-3 block text-base font-medium text-[#07074D]">
-                                            Date
-                                        </label>
-                                        <input type="date" name="date" id="date"
-                                            class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
-                                    </div>
-                                </div>
-                                <div class="w-full px-3 sm:w-1/2">
-                                    <div class="mb-5">
-                                        <label for="time" class="mb-3 block text-base font-medium text-[#07074D]">
-                                            Time
-                                        </label>
-                                        <input type="time" name="time" id="time"
-                                            class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
-                                    </div>
-                                </div>
-                            </div>
+                
 
                             <div class="mb-5 pt-3">
                                 <label class="mb-5 block text-base font-semibold text-[#07074D] sm:text-xl">
                                     Address Details
                                 </label>
                                 <div class="-mx-3 flex flex-wrap">
-                                    <div class="w-full px-3 sm:w-1/2">
+                                    <div class="w-full px-3">
                                         <div class="mb-5">
                                             <input type="text" name="area" id="area" placeholder="Enter area"
-                                                class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
-                                        </div>
-                                    </div>
-                                    <div class="w-full px-3 sm:w-1/2">
-                                        <div class="mb-5">
-                                            <input type="text" name="city" id="city" placeholder="Enter city"
-                                                class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
-                                        </div>
-                                    </div>
-                                    <div class="w-full px-3 sm:w-1/2">
-                                        <div class="mb-5">
-                                            <input type="text" name="state" id="state" placeholder="Enter state"
-                                                class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
-                                        </div>
-                                    </div>
-                                    <div class="w-full px-3 sm:w-1/2">
-                                        <div class="mb-5">
-                                            <input type="text" name="post-code" id="post-code" placeholder="Post Code"
                                                 class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
                                         </div>
                                     </div>
@@ -85,7 +48,7 @@ const Profile = () => {
 
                             <div>
                                 <button
-                                    class="hover:shadow-form w-full rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">
+                                    class="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 dark:bg-purple-600 dark:hover:bg-purple-700 focus:outline-none dark:focus:ring-purple-800">
                                     Book Appointment
                                 </button>
                             </div>

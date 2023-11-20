@@ -5,23 +5,23 @@ const Result = () => {
     return (
         <div className="result_page">
             <Navbar />
-            <div className="content">
-                <div className="Buttons flex justify-center gap-20">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <div className="content mt-16 ">
+                <div className="Buttons flex justify-center gap-20 mb-4">
+                    <button class="text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:ring-gray-800 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 dark:bg-gray-900 dark:hover:bg-gray-800 focus:outline-none dark:focus:ring-gray-900">
                         Button
                     </button>
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <button class="text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:ring-gray-800 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 dark:bg-gray-900 dark:hover:bg-gray-800 focus:outline-none dark:focus:ring-gray-900">
                         Button
                     </button>
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <button class="text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:ring-gray-800 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 dark:bg-gray-900 dark:hover:bg-gray-800 focus:outline-none dark:focus:ring-gray-900">
                         Button
                     </button>
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <button class="text-white bg-gray-800 hover:bg-gray-900 focus:ring-4 focus:ring-gray-800 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 sm:mr-2 lg:mr-0 dark:bg-gray-900 dark:hover:bg-gray-800 focus:outline-none dark:focus:ring-gray-900">
                         Button
                     </button>
                 </div>
                 <section class="py-1 bg-blueGray-50">
-                    <div class="w-full xl:w-8/12 mb-12 xl:mb-0 px-4 mx-auto mt-24">
+                    <div class="w-full xl:w-8/12 mb-12 xl:mb-0 px-4 mx-auto">
                         <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded ">
 
                             <div class="block w-full overflow-x-auto">

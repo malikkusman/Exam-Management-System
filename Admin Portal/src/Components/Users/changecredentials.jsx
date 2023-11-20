@@ -94,7 +94,7 @@ export default function UserPassword() {
 
   return (
     <div style={{ width: "100%", display: "flex" }}>
-      <div style={{ width: "22%" }}>
+      <div style={{ width: "22.4%" }}>
         <Sidebar />
       </div>
       <div style={{ width: "83%" }}>

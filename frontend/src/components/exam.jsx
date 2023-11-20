@@ -5,8 +5,8 @@ const Exam = () => {
     return (
         <div className="exam_page">
             <Navbar />
-            <div className="content relative sm:mx-[12%]">   
-                <h1>Exam</h1>
+            <div className="content relative mt-16 mb-8 sm:mx-[12%]">   
+            <h1 className="text-3xl">Exams</h1>
                 <section class="radio-section">
                     <div class="radio-list">
                         <h1>Which Social Media you Often use?</h1>

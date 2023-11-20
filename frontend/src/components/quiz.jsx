@@ -144,9 +144,10 @@ const Quiz = () => {
     return (
         <div className="quiz_page">
             <Navbar />
-            <div className="content flex flex-col justify-center items-center">
+            <div className="content flex flex-col mt-16 mb-8 justify-center items-center">
+            <h1 className="text-3xl">Quizes</h1>
                 <Modal showModal={showModal} setShowModal={setShowModal} />
-                <div className="max-w-4xl px-10 my-4 py-6 bg-white rounded-lg shadow-md">
+                <div className="max-w-4xl px-10 bg-white rounded-lg shadow-md">
                     <div className="flex justify-between items-center">
                         <span className="font-light text-gray-600">mar 10, 2019</span>
                         <a className="px-2 py-1 bg-gray-600 text-gray-100 font-bold rounded hover:bg-gray-500 cursor-pointer" onClick={() => setShowModal(true)} >
