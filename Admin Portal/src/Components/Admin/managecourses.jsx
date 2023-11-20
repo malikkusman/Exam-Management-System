@@ -22,7 +22,6 @@ export default function ManageCourses() {
   const [udata, setudata] = useState([])
   const [showModal, setShowModal] = useState(false);
 
-
   useEffect(() => {
     fetchData();
   }, [showModal]);
@@ -35,6 +34,9 @@ export default function ManageCourses() {
       console.error("Error:", error);
     }
   }
+
+  
+
 
   const updateHandle = (cour) => {
     setudata(cour)
@@ -213,12 +215,30 @@ const Modal = ({ data, showModal, setShowModal }) => {
   const [instructor, setInstructor] = useState(data.INSTname); // Assuming `data.INSTname` holds initial value
   const [description, setDescription] = useState(data.Description); // Assuming `data.Description` holds initial value
 
+  const [teacher, setTeachers] = useState([])
+  useEffect(() => {
+    teachers();
+  },[])
+  const teachers = async () => {
+    const role = "teacher"
+    try {
+      const response = await axios.get(`http://localhost:4000/user/getall?role=${role}`);
+
+      if (response.status !== 200) {
+        throw new Error("Request failed.");
+      }
+      setTeachers(response.data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
   useEffect(() => {
     console.log("hello")
     setCourse(data.Course)
     setDescription(data.Description)
     setInstructor(data.INSTname)
-  },[showModal])
+  }, [showModal])
 
   const handleCourseChange = (e) => {
     setCourse(e.target.value);
@@ -245,6 +265,7 @@ const Modal = ({ data, showModal, setShowModal }) => {
       const response = await axios.put(`http://localhost:4000/course/update?id=${data._id}`, data1);
       console.log(response.data)
       if (response.data.message === "updated") {
+        setSubmit(false)
         window.location.href = "/manage-courses";
       } else if (response.data.message === "already") {
         setSubmit(false);
@@ -286,9 +307,12 @@ const Modal = ({ data, showModal, setShowModal }) => {
                     value={instructor}
                     onChange={handleInstructorChange}
                   >
-                    <option value="">Select</option>
-                    <option value="instructor1">Instructor 1</option>
-                    <option value="instructor2">Instructor 2</option>
+                    <option value="">Select Instructor</option>
+                    {teacher && teacher.map((instructor, index) => (
+                      <option key={instructor._id} value={instructor.Username}>
+                        {instructor.Username}
+                      </option>
+                    ))}
                     {/* Add more options as needed */}
                   </select>
                   <MDBTextArea
@@ -298,24 +322,24 @@ const Modal = ({ data, showModal, setShowModal }) => {
                     rows={4}
                     onChange={handleDescriptionChange}
                   />
-                <br />
-                <MDBBtn
-                  type="submit"
-                  className="w-100 mb-4"
-                  size="md"
-                  style={{
-                    backgroundColor: "#3c4763",
-                    color: "white",
-                  }}
-                >
-                  {submit ? <MDBSpinner style={{ color: "white" }}></MDBSpinner> : <span>Update Course</span>}
-                </MDBBtn>
-              </MDBCardBody>
-            </form>
-          </MDBCard>
-        </MDBCol>
-      </center>
-    </div>
+                  <br />
+                  <MDBBtn
+                    type="submit"
+                    className="w-100 mb-4"
+                    size="md"
+                    style={{
+                      backgroundColor: "#3c4763",
+                      color: "white",
+                    }}
+                  >
+                    {submit ? <MDBSpinner style={{ color: "white" }}></MDBSpinner> : <span>Update Course</span>}
+                  </MDBBtn>
+                </MDBCardBody>
+              </form>
+            </MDBCard>
+          </MDBCol>
+        </center>
+      </div>
     </div >
   );
 };

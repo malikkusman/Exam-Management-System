@@ -266,7 +266,7 @@ const Modal = ({ data, showModal, setShowModal }) => {
       const response = await axios.put(`http://localhost:4000/user/update?id=${data._id}`, data1);
       console.log(response.data)
       if (response.data.message === "updated") {
-        window.location.href = "/manage-courses";
+        window.location.href = "/manage-teachers";
       } else if (response.data.message === "already") {
         setSubmit(false);
         document.getElementById("desk-error").innerHTML = "Course ALREADY EXIST";

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from 'axios';  
+import axios from 'axios';
 import Sidebar from "./sidebar";
 import Header from "./navbar";
 import {
@@ -21,7 +21,7 @@ export default function Adddcourse() {
     const course = document.getElementById("course").value;
     const instname = document.getElementById("instructor").value;
     const description = document.getElementById("description").value;
-  
+
     try {
       const response = await axios.post('http://localhost:4000/course/add', {
         course,
@@ -41,6 +41,25 @@ export default function Adddcourse() {
       console.error("Error:", error);
     }
   };
+
+  useEffect(() => {
+    teachers()
+  }, [])
+
+  const [teacher, setTeachers] = useState([])
+  const teachers = async () => {
+    const role = "teacher"
+    try {
+      const response = await axios.get(`http://localhost:4000/user/getall?role=${role}`);
+
+      if (response.status !== 200) {
+        throw new Error("Request failed.");
+      }
+      setTeachers(response.data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
 
 
 
@@ -84,8 +103,11 @@ export default function Adddcourse() {
                     required
                   >
                     <option value="">Select Instructor</option>
-                    <option value="instructor1">Instructor 1</option>
-                    <option value="instructor2">Instructor 2</option>
+                    {teacher && teacher.map((instructor, index) => (
+                      <option key={instructor._id} value={instructor.Username}>
+                        {instructor.Username}
+                      </option>
+                    ))}
                     {/* Add more options as needed */}
                   </select>
                   <MDBTextArea label='Desk Description' id='description' rows={4} />
