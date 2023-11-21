@@ -36,6 +36,7 @@ import GenerateReports from './Components/Users/generatereports';
 import Adddcourse from './Components/Admin/addcourse';
 import Addinstructor from './Components/Admin/addinstructor';
 import Addschedule from './Components/Admin/addschedule';
+import Addassignment from './Components/Users/addassignment';
 
 function App() {
   return (
@@ -70,6 +71,7 @@ function App() {
         <PrivateUser path="/attendance" component={Attendance}/>
         <PrivateUser path="/room-details-user" component={RoomDetailsUser}/>
         <PrivateUser path="/create-assignment" component={CreateAssignment}/>
+        <PrivateUser path="/add-assignment" component={Addassignment}/>
         <PrivateUser path="/desk-details-user" component={Deskdetailsuser}/>
         <PrivateUser path="/book-room" component={Bookroom}/>
         <PrivateUser path="/book-desk" component={Bookdesk}/>

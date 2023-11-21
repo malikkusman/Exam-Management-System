@@ -11,6 +11,7 @@ var indexRouter = require('./routes/index');
 var authRouter = require('./routes/auth');
 var courseRouter = require('./routes/course');
 var scheduleRouter = require('./routes/schedule');
+var attendanceRouter = require('./routes/attendance');
 
 
 
@@ -33,6 +34,7 @@ app.use('/', indexRouter);
 app.use('/user', authRouter);
 app.use('/course', courseRouter);
 app.use('/schedule', scheduleRouter);
+app.use('/attendance', attendanceRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

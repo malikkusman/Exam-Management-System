@@ -42,6 +42,7 @@ async function updateCourse(req, res) {
     try {
       const id = req.query.id;
       const updatedCourse = await Course.findByIdAndUpdate(id, req.body, { new: true });
+      console.log(updatedCourse)
       res.status(200).json(updatedCourse);
     } catch (err) {
       res.status(500).json({ error: err.message });
