@@ -42,6 +42,34 @@ export default function Mangaeusers() {
     }
   }
 
+  const handleActive = async (id,event) => {
+    console.log(event.target.name)  
+    let active = true
+    if (event.target.name == 'inactive'){
+      active = true
+    }
+    else{
+      active = false
+    }
+    const data1 = {
+      active : active
+    }
+    try {
+      const response = await axios.put(`http://localhost:4000/user/update?id=${id}`, data1);
+      console.log(response.data)
+      if (response.status === 200) {
+       
+        window.location.href = "/manage-users";
+      } else if (response.data.message === "already") {
+        document.getElementById("desk-error").innerHTML = "Course ALREADY EXIST";
+        document.getElementById("desk-error").style.color = "red";
+        document.getElementById("desk-error").style.display = "block";
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
   const fetchData = async () => {
     const role = "student"
     try {
@@ -164,7 +192,7 @@ export default function Mangaeusers() {
                 <th>Last Name</th>
                 <th>Username</th>
                 <th>Email</th>
-                <th>Password</th>
+                <th>Status</th>
                 <th>Update</th>
                 <th>Delete</th>
               </tr>
@@ -176,7 +204,17 @@ export default function Mangaeusers() {
                   <td>{user.Lastname}</td>
                   <td>{user.Username}</td>
                   <td>{user.email}</td>
-                  <td>{user.password}</td>
+                  <td><Button name={user.active ? 'active' : 'inactive'} onClick={(event) => handleActive(user._id,event)}
+                          style={{
+                            backgroundColor: "#3c4763",
+                            border: "none",
+                            color: "white",
+                            fontWeight: "bold",
+                            marginTop: "10px",
+                          }}
+                        >
+                          {user.active ? 'active' : 'inactive'}
+                        </Button></td>
                   <td><Button onClick={() => {
                         updateHandle(user);
                         setShowModal(true);
@@ -228,7 +266,6 @@ const Modal = ({ data, showModal, setShowModal }) => {
     setemail(data.email)
     setusername(data.Username)
     setpassword(data.password)
-    console.log("hello",username)
   },[showModal])
 
   const handlefChange = (e) => {
@@ -265,7 +302,7 @@ const Modal = ({ data, showModal, setShowModal }) => {
     try {
       const response = await axios.put(`http://localhost:4000/user/update?id=${data._id}`, data1);
       console.log(response.data)
-      if (response.data.message === "updated") {
+      if (response.status === 200) {
         window.location.href = "/manage-users";
       } else if (response.data.message === "already") {
         setSubmit(false);

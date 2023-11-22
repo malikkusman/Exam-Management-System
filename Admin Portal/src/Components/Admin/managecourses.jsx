@@ -35,7 +35,7 @@ export default function ManageCourses() {
     }
   }
 
-  
+
 
 
   const updateHandle = (cour) => {
@@ -77,6 +77,33 @@ export default function ManageCourses() {
     var query = document.getElementById("search").value;
     if (query == "") {
       setcourse(back);
+    }
+  }
+
+  const handleActive = async (id, event) => {
+    console.log(event.target.name)
+    let active = true
+    if (event.target.name == 'inactive') {
+      active = true
+    }
+    else {
+      active = false
+    }
+    const data1 = {
+      active: active
+    }
+    try {
+      const response = await axios.put(`http://localhost:4000/course/update?id=${id}`, data1);
+      console.log(response.data)
+      if (response.status === 200) {
+        window.location.href = "/manage-courses";
+      } else if (response.data.message === "already") {
+        document.getElementById("desk-error").innerHTML = "Course ALREADY EXIST";
+        document.getElementById("desk-error").style.color = "red";
+        document.getElementById("desk-error").style.display = "block";
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
   }
 
@@ -194,6 +221,17 @@ export default function ManageCourses() {
                           Delete
                         </Button>
                       </div>
+                      <Button name={course.active ? 'active' : 'inactive'} onClick={(event) => handleActive(course._id, event)}
+                        style={{
+                          backgroundColor: "#3c4763",
+                          border: "none",
+                          color: "white",
+                          fontWeight: "bold",
+                          marginTop: "10px",
+                        }}
+                      >
+                        {course.active ? 'active' : 'inactive'}
+                      </Button>
 
                     </b>
                     <br />
@@ -218,7 +256,7 @@ const Modal = ({ data, showModal, setShowModal }) => {
   const [teacher, setTeachers] = useState([])
   useEffect(() => {
     teachers();
-  },[])
+  }, [])
   const teachers = async () => {
     const role = "teacher"
     try {
@@ -264,7 +302,7 @@ const Modal = ({ data, showModal, setShowModal }) => {
     try {
       const response = await axios.put(`http://localhost:4000/course/update?id=${data._id}`, data1);
       console.log(response.data)
-      if (response.data.message === "updated") {
+      if (response.status === 200) {
         setSubmit(false)
         window.location.href = "/manage-courses";
       } else if (response.data.message === "already") {

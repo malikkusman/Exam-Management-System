@@ -46,10 +46,10 @@ const Sidebar = () => {
           prefix={<i className="fa fa-bars fa-large" id="bars"></i>}
         >
           <img
-            src="/Assets/logo.png"
+            src="/Assets/logo4.svg"
             alt="Booking Tool"
             id="mainlogo"
-            style={{ width: "160px", height: "70px", marginTop: "-10px" }}
+            style={{ width: "200px", height: "100px", marginTop: "-10px" }}
           />
         </CDBSidebarHeader>
 

@@ -19,7 +19,7 @@ export default function Addusers() {
   const [Isprojector, setIsProjector] = useState(false);
   const [Iswhiteboard, setIswhiteboard] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setSubmit(true);
     const Data = {
@@ -31,22 +31,33 @@ export default function Addusers() {
       role: "student"
     }
     console.log(Data)
-    axios.post('http://localhost:4000/user/register', Data)
-      .then((response) => {
-        console.log('Response:', response.data);
-        if (response.data.message == "data added") {
-          window.location.href = "manage-users";
-        }
-        else if (response.data == "already") {
-          setSubmit(false);
-          document.getElementById("room-error").innerHTML = "ROOM ALREADY EXIST";
-          document.getElementById("room-error").style.color = "red";
-          document.getElementById("room-error").style.display = "block";
-        }
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+    const role = "student"
+    const existingUsers = await axios.get(`http://localhost:4000/user/getall?role=${role}`);
+    console.log('Existing Users:', existingUsers.data);
+    const duplicateEmail = existingUsers.data.some(user => user.email === document.getElementById("email").value);
+    const duplicateUsername = existingUsers.data.some(user => user.Username === document.getElementById("username").value);
+
+    if (duplicateEmail || duplicateUsername) {
+      alert("Email or Username already exists");
+    }
+    else {
+      axios.post('http://localhost:4000/user/register', Data)
+        .then((response) => {
+          console.log('Response:', response.data);
+          if (response.data.message == "data added") {
+            window.location.href = "manage-users";
+          }
+          else if (response.data == "already") {
+            setSubmit(false);
+            document.getElementById("room-error").innerHTML = "ROOM ALREADY EXIST";
+            document.getElementById("room-error").style.color = "red";
+            document.getElementById("room-error").style.display = "block";
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
   }
 
   const handleSubmit1 = async (event) => {

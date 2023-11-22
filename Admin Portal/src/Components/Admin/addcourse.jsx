@@ -29,7 +29,7 @@ export default function Adddcourse() {
         description,
       });
       console.log(response.data.message)
-      if (response.data.message === "added") {
+      if (response.status === 200) {
         window.location.href = "/manage-courses";
       } else if (response.data.message === "already") {
         setSubmit(false);

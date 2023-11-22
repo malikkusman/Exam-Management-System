@@ -69,6 +69,34 @@ export default function ManageScheduling() {
     }
   };
 
+  const handleActive = async (id, event) => {
+    console.log(event.target.name)
+    let active = true
+    if (event.target.name == 'inactive') {
+      active = true
+    }
+    else {
+      active = false
+    }
+    const data1 = {
+      active: active
+    }
+    try {
+      const response = await axios.put(`http://localhost:4000/schedule/update?id=${id}`, data1);
+      console.log(response.data)
+      if (response.status === 200) {
+        window.location.href = "/manage-scheduling";
+      } else if (response.data.message === "already") {
+        document.getElementById("desk-error").innerHTML = "Course ALREADY EXIST";
+        document.getElementById("desk-error").style.color = "red";
+        document.getElementById("desk-error").style.display = "block";
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+
+
 
   return (
     <div style={{ width: "100%", display: "flex" }}>
@@ -154,6 +182,7 @@ export default function ManageScheduling() {
                 <th>Day</th>
                 <th>From</th>
                 <th>To</th>
+                <th>Status</th>
                 <th>Update</th>
                 <th>Delete</th>
               </tr>
@@ -166,6 +195,17 @@ export default function ManageScheduling() {
                   <td>{us.Day}</td>
                   <td>{us.From}</td>
                   <td>{us.To}</td>
+                  <td><Button name={us.active ? 'active' : 'inactive'} onClick={(event) => handleActive(us._id, event)}
+                    style={{
+                      backgroundColor: "#3c4763",
+                      border: "none",
+                      color: "white",
+                      fontWeight: "bold",
+                      marginTop: "10px",
+                    }}
+                  >
+                    {us.active ? 'active' : 'inactive'}
+                  </Button></td>
                   <td><Button onClick={() => {
                     updateHandle(us);
                     setShowModal(true);
@@ -216,7 +256,7 @@ const Modal = ({ data, showModal, setShowModal }) => {
     if (!timeString || typeof timeString !== 'string') {
       return ''; // Handle the case where timeString is undefined or not a string
     }
-  
+
     const [hours = '00', minutes = '00'] = timeString.split(':');
     const formattedTime = `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
     return formattedTime;
@@ -228,7 +268,7 @@ const Modal = ({ data, showModal, setShowModal }) => {
     setemail(data.Day)
     setusername(convertStringToTime(data.From))
     setpassword(convertStringToTime(data.To))
-  },[showModal])
+  }, [showModal])
 
   const handlefChange = (e) => {
     setfname(e.target.value);
@@ -282,7 +322,7 @@ const Modal = ({ data, showModal, setShowModal }) => {
       console.error("Error:", error);
     }
   }
-  
+
 
   const handleSubmit = async (event) => {
     setShowModal(false)
@@ -298,7 +338,7 @@ const Modal = ({ data, showModal, setShowModal }) => {
     try {
       const response = await axios.put(`http://localhost:4000/schedule/update?id=${data._id}`, data1);
       console.log(response.data)
-      if (response.data.message === "updated") {
+      if (response.status === 200) {
         window.location.href = "/manage-scheduling";
       } else if (response.data.message === "already") {
         setSubmit(false);
@@ -322,7 +362,7 @@ const Modal = ({ data, showModal, setShowModal }) => {
                 onSubmit={handleSubmit}
               >
                 <MDBCardBody className="p-5">
-                <select
+                  <select
                     className="form-select mb-4"
                     id="fname"
                     name="fname"
@@ -390,24 +430,24 @@ const Modal = ({ data, showModal, setShowModal }) => {
                     type="time"
                     required
                   />
-                <br />
-                <MDBBtn
-                  type="submit"
-                  className="w-100 mb-4"
-                  size="md"
-                  style={{
-                    backgroundColor: "#3c4763",
-                    color: "white",
-                  }}
-                >
-                  {submit ? <MDBSpinner style={{ color: "white" }}></MDBSpinner> : <span>Update Teacher</span>}
-                </MDBBtn>
-              </MDBCardBody>
-            </form>
-          </MDBCard>
-        </MDBCol>
-      </center>
-    </div>
+                  <br />
+                  <MDBBtn
+                    type="submit"
+                    className="w-100 mb-4"
+                    size="md"
+                    style={{
+                      backgroundColor: "#3c4763",
+                      color: "white",
+                    }}
+                  >
+                    {submit ? <MDBSpinner style={{ color: "white" }}></MDBSpinner> : <span>Update Teacher</span>}
+                  </MDBBtn>
+                </MDBCardBody>
+              </form>
+            </MDBCard>
+          </MDBCol>
+        </center>
+      </div>
     </div >
   );
 };
