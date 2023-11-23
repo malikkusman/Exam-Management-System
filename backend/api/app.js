@@ -5,13 +5,16 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors'); // Import the cors package
 const bodyParser = require('body-parser');
-require('./utils.js/mongodb')
+require('./utils/mongodb')
 
 var indexRouter = require('./routes/index');
 var authRouter = require('./routes/auth');
 var courseRouter = require('./routes/course');
 var scheduleRouter = require('./routes/schedule');
 var attendanceRouter = require('./routes/attendance');
+var assignmentRouter = require('./routes/assignment');
+var stuassignmentRouter = require('./routes/stuAssignment');
+var logsRouter = require('./routes/logs');
 
 
 
@@ -35,6 +38,9 @@ app.use('/user', authRouter);
 app.use('/course', courseRouter);
 app.use('/schedule', scheduleRouter);
 app.use('/attendance', attendanceRouter);
+app.use('/assignment', assignmentRouter);
+app.use('/stuassignment', stuassignmentRouter);
+app.use('/logs', logsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

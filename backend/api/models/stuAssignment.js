@@ -5,6 +5,10 @@ const Schema = mongoose.Schema({
     type: String,
     required: true,
   },
+  StudentName: {
+    type: String,
+    required: true,
+  },
   Category: {
     type: String,
     required: true,
@@ -20,15 +24,19 @@ const Schema = mongoose.Schema({
   },
   File: {
     type: String,
-    required: false
   },
   Marks: {
+    type: Number,
+  },
+  ObtainMarks: {
     type: Number,
   },
   Questions: [
     {
       question: { type: String },
-      number: { type: Number }, // Or adjust the type based on your requirement
+      totalnumber: { type: Number }, // Or adjust the type based on your requirement
+      obtainnumber: { type: Number }, // Or adjust the type based on your requirement
+      answer: { type: String }, // Or adjust the type based on your requirement
     },
   ],
   active: {
@@ -37,4 +45,4 @@ const Schema = mongoose.Schema({
   },
 },{timestamps:true});
 
-module.exports =  mongoose.model("Assignments", Schema);
+module.exports =  mongoose.model("stuassignments", Schema);

@@ -1,5 +1,5 @@
 const Schedule = require('../models/schedule')
-var { db } = require('../utils.js/mongodb');
+var { db } = require('../utils/mongodb');
 
 async function Addschedule(req, res) {
     try {

@@ -95,6 +95,7 @@ export default function Header() {
                   onClick={() => {
                    Cookies.remove("seshad");
                     window.location.href = "/";
+                    localStorage.setItem('uisLoggedIn','false')
                   }}
                 >
                   Logout
