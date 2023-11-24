@@ -1,23 +1,41 @@
 import axios from "axios";
 import { useState } from "react";
+import Cookies from 'js-cookie';
 
 
 const Login = () => {
-    const [email,setEmail] = useState("");
-    const [password,setPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     const handleClick = () => {
         const data = {
-            email:email,
-            password:password
+            email: email,
+            password: password
         }
-        axios.post('http://localhost:4000/user/login',data)
-        .then((res)=>{
-            console.log(res.data);
-        })
-        .catch((err)=>{
-            console.log(err);
-        })
+        axios.post('http://localhost:4000/user/login', data)
+            .then((response) => {
+                console.log(response);
+                Cookies.set('username', response.data.users[0].Username, { expires: 2 });
+                Cookies.set('token', response.data.token, { expires: 2 });
+                window.location.href = '/home';
+            })
+            .catch((error) => {
+                const logLevel = 'error'; // Define the log level for errors
+                const errorMessage = error.message; // Get the error message
+                const where = "login"; // Get the error message
+                const data1 = {
+                    level: logLevel,
+                    message: errorMessage,
+                    where: where,
+                }
+                axios.post('http://localhost:4000/logs/add', data1)
+                    .then((response) => {
+                        console.log("done");
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    });
+            })
     }
     return (
         <div classNameName="login_page">
@@ -63,13 +81,9 @@ const Login = () => {
                                         </span>
                                     </button>
                                     <p className="mt-6 text-xs text-gray-600 text-center">
-                                        I agree to abide by templatana's
-                                        <a href="/" className="border-b border-gray-500 border-dotted">
-                                            Terms of Service
-                                        </a>
-                                        and its
-                                        <a href="/" className="border-b border-gray-500 border-dotted">
-                                            Privacy Policy
+                                        Don't have an account?
+                                        <a href="/register" className="ml-8 border-b border-gray-500 border-dotted">
+                                            Register
                                         </a>
                                     </p>
                                 </div>

@@ -65,7 +65,7 @@ const Footer = () => {
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/" class="text-gray-700 transition hover:opacity-75">
+                                    <a href="/home" class="text-gray-700 transition hover:opacity-75">
                                         Courses
                                     </a>
                                 </li>
@@ -95,13 +95,13 @@ const Footer = () => {
 
                             <ul class="mt-6 space-y-4 text-sm">
                                 <li>
-                                    <a href="/" class="text-gray-700 transition hover:opacity-75">
+                                    <a href="/home" class="text-gray-700 transition hover:opacity-75">
                                         Contact
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="/" class="text-gray-700 transition hover:opacity-75">
+                                    <a href="/home" class="text-gray-700 transition hover:opacity-75">
                                         FAQs
                                     </a>
                                 </li>
@@ -113,13 +113,13 @@ const Footer = () => {
 
                             <ul class="mt-6 space-y-4 text-sm">
                                 <li>
-                                    <a href="/" class="text-gray-700 transition hover:opacity-75">
+                                    <a href="/home" class="text-gray-700 transition hover:opacity-75">
                                         Accessibility
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="#" class="text-gray-700 transition hover:opacity-75">
+                                    <a href="/home" class="text-gray-700 transition hover:opacity-75">
                                         Returns Policy
                                     </a>
                                 </li>
@@ -131,13 +131,13 @@ const Footer = () => {
 
                             <ul class="mt-6 space-y-4 text-sm">
                                 <li>
-                                    <a href="/" class="text-gray-700 transition hover:opacity-75">
+                                    <a href="/home" class="text-gray-700 transition hover:opacity-75">
                                         Marketing Calendar
                                     </a>
                                 </li>
 
                                 <li>
-                                    <a href="/" class="text-gray-700 transition hover:opacity-75">
+                                    <a href="/home" class="text-gray-700 transition hover:opacity-75">
                                         SEO Infographics
                                     </a>
                                 </li>
@@ -149,7 +149,7 @@ const Footer = () => {
                         >
                             <li>
                                 <a
-                                    href="/"
+                                    href="/home"
                                     rel="noreferrer"
                                     target="_blank"
                                     class="text-gray-700 transition hover:opacity-75"
@@ -173,7 +173,7 @@ const Footer = () => {
 
                             <li>
                                 <a
-                                    href="/"
+                                    href="/home"
                                     rel="noreferrer"
                                     target="_blank"
                                     class="text-gray-700 transition hover:opacity-75"
@@ -197,7 +197,7 @@ const Footer = () => {
 
                             <li>
                                 <a
-                                    href="/"
+                                    href="/home"
                                     rel="noreferrer"
                                     target="_blank"
                                     class="text-gray-700 transition hover:opacity-75"
@@ -219,7 +219,7 @@ const Footer = () => {
 
                             <li>
                                 <a
-                                    href="/"
+                                    href="/home"
                                     rel="noreferrer"
                                     target="_blank"
                                     class="text-gray-700 transition hover:opacity-75"
@@ -243,7 +243,7 @@ const Footer = () => {
 
                             <li>
                                 <a
-                                    href="/"
+                                    href="/home"
                                     rel="noreferrer"
                                     target="_blank"
                                     class="text-gray-700 transition hover:opacity-75"

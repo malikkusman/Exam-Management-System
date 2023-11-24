@@ -11,23 +11,38 @@ import Exam from './components/exam';
 import Reports from './components/reports';
 import Attendance from './components/attendance';
 import Profile from './components/profile';
+import { useState } from 'react';
+import PrivateRoute from './components/privateroute';
+import Error from './components/404';
 
 
 function App() {
   return (
     <div className="App">
       <Switch>
-        <Route exact path='/' component={Home} />
-        <Route path='/about' component={About} />
-        <Route path='/register' component={Register} />
-        <Route path='/login' component={Login} />
-        <Route path='/quiz' component={Quiz} />
-        <Route path='/assignment' component={Assignment} />
-        <Route path='/result' component={Result} />
-        <Route path='/exam' component={Exam} />
-        <Route path='/reports' component={Reports} />
-        <Route path='/attendance' component={Attendance} />
-        <Route path='/profile' component={Profile} />
+        <Route
+          exact
+          path="/"
+          render={(props) => (
+            <Login {...props} />
+          )}
+        />
+        <PrivateRoute path='/about' component={About} />
+        <Route 
+        path='/register' 
+        render={(props) => (
+          <Register {...props} />
+        )}
+        />
+        <PrivateRoute path='/home' component={Home} />
+        <PrivateRoute path='/quiz' component={Quiz} />
+        <PrivateRoute path='/assignment' component={Assignment} />
+        <PrivateRoute path='/result' component={Result} />
+        <PrivateRoute path='/exam' component={Exam} />
+        <PrivateRoute path='/reports' component={Reports} />
+        <PrivateRoute path='/attendance' component={Attendance} />
+        <PrivateRoute path='/profile' component={Profile} />
+        <Route path='/*' component={Error} />
       </Switch>
     </div>
   );

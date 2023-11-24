@@ -9,14 +9,31 @@ const Register = () => {
     const [username, setUserName] = useState("");
     const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
-    const handleGoogleLoginSuccess = (response) => {
+    const [conpass, setconPass] = useState("");
+    const handleGoogleLoginSuccess = async (response) => {
         console.log(response);
         axios.post('http://localhost:4000/user/register', response)
             .then((response) => {
-                console.log('Response:', response.data);
+                window.location.href = '/home'
+                localStorage.setItem('isLoggedIn', 'true')
+                localStorage.setItem("username", response.data.message)
             })
             .catch((error) => {
-                console.error('Error:', error);
+                const logLevel = 'error'; // Define the log level for errors
+                const errorMessage = error.message; // Get the error message
+                const where = "register"; // Get the error message
+                const data1 = {
+                    level: logLevel,
+                    message: errorMessage,
+                    where: where
+                }
+                axios.post('http://localhost:4000/logs/add', data1)
+                    .then((response) => {
+                        console.log("done");
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    });
             });
     };
 
@@ -25,24 +42,72 @@ const Register = () => {
         console.error(error);
     };
 
-    const clickhandle = () => {
-        const Data = {
-            Firstname: fname,
-            Lastname: lname,
-            email: email,
-            Username: username,
-            password: pass,
-            role: "student"
+    const clickhandle = async () => {
+        if (pass === conpass) {
+            const Data = {
+                Firstname: fname,
+                Lastname: lname,
+                email: email,
+                Username: username,
+                password: pass,
+                role: "student"
+            };
+
+            try {
+                const role = "student"
+                const existingUsers = await axios.get(`http://localhost:4000/user/getall?role=${role}`);
+                console.log('Existing Users:', existingUsers.data);
+                const duplicateEmail = existingUsers.data.some(user => user.email === email);
+                const duplicateUsername = existingUsers.data.some(user => user.Username === username);
+
+                if (duplicateEmail || duplicateUsername) {
+                    alert("Email or Username already exists");
+                } else {
+                    axios.post('http://localhost:4000/user/register', Data)
+                        .then((response) => {
+                            window.location.href = '/';
+                            console.log('Response:', response.data);
+                        })
+                        .catch((error) => {
+                            const logLevel = 'error'; // Define the log level for errors
+                            const errorMessage = error.message; // Get the error message
+                            const where = "register"; // Get the error message
+                            const data1 = {
+                                level: logLevel,
+                                message: errorMessage,
+                                where: where
+                            }
+                            axios.post('http://localhost:4000/logs/add', data1)
+                                .then((response) => {
+                                    console.log("done");
+                                })
+                                .catch((error) => {
+                                    console.log(error)
+                                });
+                        });
+                }
+            } catch (error) {
+                const logLevel = 'error'; // Define the log level for errors
+                const errorMessage = error.message; // Get the error message
+                const where = "register"; // Get the error message
+                const data1 = {
+                    level: logLevel,
+                    message: errorMessage,
+                    where: where
+                }
+                axios.post('http://localhost:4000/logs/add', data1)
+                    .then((response) => {
+                        console.log("done");
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    });
+            }
+        } else {
+            alert("Enter the same password");
         }
-        console.log(Data)
-        axios.post('http://localhost:4000/user/register', Data)
-            .then((response) => {
-                console.log('Response:', response.data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-    }
+    };
+
     return (
         <div classNameName="register_page">
             <div className="bg-gray-100 text-gray-900 flex justify-center">
@@ -82,6 +147,7 @@ const Register = () => {
                                     <input
                                         className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                                         type="name"
+                                        required
                                         value={fname}
                                         onChange={(e) => setFirstName(e.target.value)}
                                         placeholder="First Name"
@@ -96,6 +162,7 @@ const Register = () => {
                                     <input
                                         className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                                         type="text"
+                                        required
                                         value={username}
                                         onChange={(e) => setUserName(e.target.value)}
                                         placeholder="Username"
@@ -103,6 +170,7 @@ const Register = () => {
                                     <input
                                         className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                                         type="email"
+                                        required
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="Email"
@@ -110,9 +178,18 @@ const Register = () => {
                                     <input
                                         className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
                                         type="password"
+                                        required
                                         value={pass}
                                         onChange={(e) => setPass(e.target.value)}
                                         placeholder="Password"
+                                    />
+                                    <input
+                                        className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                                        type="password"
+                                        required
+                                        value={conpass}
+                                        onChange={(e) => setconPass(e.target.value)}
+                                        placeholder="Confirm Password"
                                     />
                                     <button
                                         className="mt-5 tracking-wide font-semibold bg-[#5c448c] text-gray-100 w-full py-4 rounded-lg hover:bg-[#573896] transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" onClick={clickhandle}
@@ -134,13 +211,9 @@ const Register = () => {
                                         </span>
                                     </button>
                                     <p className="mt-6 text-xs text-gray-600 text-center">
-                                        I agree to abide by templatana's
-                                        <a href="/" className="border-b border-gray-500 border-dotted">
-                                            Terms of Service
-                                        </a>
-                                        and its
-                                        <a href="/" className="border-b border-gray-500 border-dotted">
-                                            Privacy Policy
+                                        Already have account?
+                                        <a href="/" className="ml-8 border-b border-gray-500 border-dotted">
+                                            Login
                                         </a>
                                     </p>
                                 </div>
